@@ -62,10 +62,6 @@ function steerStraight(p1, p2) {
   brake(pin0, pin1)
 }
 
-
-// defining pin variables
-var forwardPin, reversePin, leftPin, rightPin
-
 httpServer.listen(3000)
 
 io.on('connection', function (socket) {
@@ -79,12 +75,12 @@ io.on('connection', function (socket) {
     emitUsersCount(io)
   })
 
+  // Power Commands
   socket.on('command:forward:on', function (data) {
     forward(pin0, pin1)
     console.log('command received! --> FORWARD ON')
   })
 
-  // Steering Commands
   socket.on('command:forward:off', function (data) {
     brake(pin0, pin1)
     console.log('command received! --> FORWARD OFF')
@@ -100,6 +96,7 @@ io.on('connection', function (socket) {
     console.log('command received! --> REVERSE OFF')
   })
 
+  // Steering Commands
   socket.on('command:left:on', function (data) {
     steerLeft(pin2, pin3)
     console.log('command received! --> LEFT ON')
@@ -121,8 +118,6 @@ io.on('connection', function (socket) {
   })
 })
 
-
-
 // emit usersCount to all sockets
 function emitUsersCount(io) {
   io.sockets.emit('usersCount', {
@@ -138,12 +133,13 @@ function emitSignalReceived(io, message) {
   })
 }
 
-
 // setting app stuff
 app.locals.title = 'Tessel 2 New Bright RC Hack'
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'))
+// current issues with jade/pug
+// will look into this later but for now just serve html
 //app.set('view engine', 'jade')
 
 app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')))
@@ -154,10 +150,12 @@ app.use(cookieParser())
 
 app.use(express.static(path.join(__dirname, 'public')))
 
-
 // Routes
 app.get('/', function(req, res, next) {
   res.send('/public/index.html')
 })
 
-console.log("Server running at http://192.168.1.101:3000/")
+let address = httpServer.address()
+
+// get Tessel 2 IP address via cli with `t2 wifi`
+console.log(`Server running at http://tessel2IpAddress:${address.port}`)
