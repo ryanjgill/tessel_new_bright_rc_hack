@@ -2,7 +2,7 @@
   "name": "tessel-code",
   "version": "0.0.0",
   "description": "Tessel project",
-  "main": "index.js",
+  "main": "app.js",
   "dependencies": {
     "body-parser": "^1.15.0",
     "cookie-parser": "^1.4.1",

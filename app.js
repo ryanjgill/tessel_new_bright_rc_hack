@@ -44,15 +44,15 @@ function brake(p1, p2) {
 
 function steerLeft(p1, p2) {
   steerStraight(pin2, pin3)
-  p1.output(1)
-  p2.output(0)
+  p1.output(0)
+  p2.output(1)
   forward(pin0, pin1)
 }
 
 function steerRight(p1, p2) {
   steerStraight(pin2, pin3)
-  p1.output(0)
-  p2.output(1)
+  p1.output(1)
+  p2.output(0)
   forward(pin0, pin1)
 }
 

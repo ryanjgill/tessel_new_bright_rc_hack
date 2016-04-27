@@ -40,4 +40,5 @@ $(function () {
     $('#right').mouseup(function () {
         socket.emit('command:right:off')
     })
+
 })
