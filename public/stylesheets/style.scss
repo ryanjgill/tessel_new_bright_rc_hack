@@ -91,11 +91,11 @@ $right-dark: #303F9F;
   background-color: $forward;
   box-shadow: 0 0 0 1px $forward inset, 0 0 0 2px rgba(255, 255, 255, 0.15) inset, 0 8px 0 0 $forward-dark, 0 8px 0 1px rgba(0, 0, 0, 0.4), 0 8px 8px 1px rgba(0, 0, 0, 0.5);
 }
-.btn-big-forward:hover, .btn-big-forward:focus {
-  background-color: $forward-dark;
-  box-shadow: 0 0 0 1px $forward inset, 0 0 0 2px rgba(255, 255, 255, 0.15) inset, 0 10px 0 0 $forward-dark, 0 10px 0 1px rgba(0, 0, 0, 0.4), 0 10px 8px 1px rgba(0, 0, 0, 0.6);
-  top: -2px;
-}
+//.btn-big-forward:hover, .btn-big-forward:focus {
+//  background-color: $forward-dark;
+//  box-shadow: 0 0 0 1px $forward inset, 0 0 0 2px rgba(255, 255, 255, 0.15) inset, 0 10px 0 0 $forward-dark, 0 10px 0 1px rgba(0, 0, 0, 0.4), 0 10px 8px 1px rgba(0, 0, 0, 0.6);
+//  top: -2px;
+//}
 .btn-big-forward:active {
   box-shadow: 0 0 0 1px $forward-dark inset, 0 0 0 2px rgba(255, 255, 255, 0.15) inset, 0 0 0 1px rgba(0, 0, 0, 0.4);
   -moz-transform: translateY(10px);
@@ -108,11 +108,11 @@ $right-dark: #303F9F;
   background-color: $reverse;
   box-shadow: 0 0 0 1px $reverse inset, 0 0 0 2px rgba(255, 255, 255, 0.15) inset, 0 8px 0 0 $reverse-dark, 0 8px 0 1px rgba(0, 0, 0, 0.4), 0 8px 8px 1px rgba(0, 0, 0, 0.5);
 }
-.btn-big-reverse:hover, .btn-big-reverse:focus {
-  background-color: $reverse-dark;
-  box-shadow: 0 0 0 1px $reverse inset, 0 0 0 2px rgba(255, 255, 255, 0.15) inset, 0 10px 0 0 $reverse-dark, 0 10px 0 1px rgba(0, 0, 0, 0.4), 0 10px 8px 1px rgba(0, 0, 0, 0.6);
-  top: -2px;
-}
+//.btn-big-reverse:hover, .btn-big-reverse:focus {
+//  background-color: $reverse-dark;
+//  box-shadow: 0 0 0 1px $reverse inset, 0 0 0 2px rgba(255, 255, 255, 0.15) inset, 0 10px 0 0 $reverse-dark, 0 10px 0 1px rgba(0, 0, 0, 0.4), 0 10px 8px 1px rgba(0, 0, 0, 0.6);
+//  top: -2px;
+//}
 .btn-big-reverse:active {
   box-shadow: 0 0 0 1px $reverse-dark inset, 0 0 0 2px rgba(255, 255, 255, 0.15) inset, 0 0 0 1px rgba(0, 0, 0, 0.4);
   -moz-transform: translateY(10px);
@@ -125,11 +125,11 @@ $right-dark: #303F9F;
   background-color: $left;
   box-shadow: 0 0 0 1px $left inset, 0 0 0 2px rgba(255, 255, 255, 0.15) inset, 0 8px 0 0 $left-dark, 0 8px 0 1px rgba(0, 0, 0, 0.4), 0 8px 8px 1px rgba(0, 0, 0, 0.5);
 }
-.btn-big-left:hover, .btn-big-left:focus {
-  background-color: $left-dark;
-  box-shadow: 0 0 0 1px $left inset, 0 0 0 2px rgba(255, 255, 255, 0.15) inset, 0 10px 0 0 $left-dark, 0 10px 0 1px rgba(0, 0, 0, 0.4), 0 10px 8px 1px rgba(0, 0, 0, 0.6);
-  top: -2px;
-}
+//.btn-big-left:hover, .btn-big-left:focus {
+//  background-color: $left-dark;
+//  box-shadow: 0 0 0 1px $left inset, 0 0 0 2px rgba(255, 255, 255, 0.15) inset, 0 10px 0 0 $left-dark, 0 10px 0 1px rgba(0, 0, 0, 0.4), 0 10px 8px 1px rgba(0, 0, 0, 0.6);
+//  top: -2px;
+//}
 .btn-big-left:active {
   box-shadow: 0 0 0 1px $left-dark inset, 0 0 0 2px rgba(255, 255, 255, 0.15) inset, 0 0 0 1px rgba(0, 0, 0, 0.4);
   -moz-transform: translateY(10px);
@@ -142,11 +142,11 @@ $right-dark: #303F9F;
   background-color: $right;
   box-shadow: 0 0 0 1px $right inset, 0 0 0 2px rgba(255, 255, 255, 0.15) inset, 0 8px 0 0 $right-dark, 0 8px 0 1px rgba(0, 0, 0, 0.4), 0 8px 8px 1px rgba(0, 0, 0, 0.5);
 }
-.btn-big-right:hover, .btn-big-right:focus {
-  background-color: $right-dark;
-  box-shadow: 0 0 0 1px $right inset, 0 0 0 2px rgba(255, 255, 255, 0.15) inset, 0 10px 0 0 $right-dark, 0 10px 0 1px rgba(0, 0, 0, 0.4), 0 10px 8px 1px rgba(0, 0, 0, 0.6);
-  top: -2px;
-}
+//.btn-big-right:hover, .btn-big-right:focus {
+//  background-color: $right-dark;
+//  box-shadow: 0 0 0 1px $right inset, 0 0 0 2px rgba(255, 255, 255, 0.15) inset, 0 10px 0 0 $right-dark, 0 10px 0 1px rgba(0, 0, 0, 0.4), 0 10px 8px 1px rgba(0, 0, 0, 0.6);
+//  top: -2px;
+//}
 .btn-big-right:active {
   box-shadow: 0 0 0 1px $right-dark inset, 0 0 0 2px rgba(255, 255, 255, 0.15) inset, 0 0 0 1px rgba(0, 0, 0, 0.4);
   -moz-transform: translateY(10px);
