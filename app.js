@@ -1,23 +1,32 @@
 'use strict'
 
 // node express
-let express = require('express')
-let path = require('path')
-let favicon = require('serve-favicon')
-let logger = require('morgan')
-let cookieParser = require('cookie-parser')
-let bodyParser = require('body-parser')
+const express = require('express')
+const path = require('path')
+const favicon = require('serve-favicon')
+const logger = require('morgan')
+const cookieParser = require('cookie-parser')
+const bodyParser = require('body-parser')
 
-let app = express()
+const app = express()
 
-let httpServer = require('http').Server(app)
-let io = require('socket.io')(httpServer)
+const httpServer = require('http').Server(app)
+const io = require('socket.io')(httpServer)
 
-let tessel = require('tessel')
-let pin0 = tessel.port.A.pin[0]
-let pin1 = tessel.port.A.pin[1]
-let pin2 = tessel.port.A.pin[2]
-let pin3 = tessel.port.A.pin[3]
+const tessel = require('tessel')
+
+// leds to display if user is connected
+const usersLed = tessel.led[2]
+const noUsersLed = tessel.led[3]
+
+// start with noUsersLed turned on
+noUsersLed.on()
+
+// motor pins
+const pin0 = tessel.port.A.pin[0]
+const pin1 = tessel.port.A.pin[1]
+const pin2 = tessel.port.A.pin[2]
+const pin3 = tessel.port.A.pin[3]
 
 pin0.output(0)
 pin1.output(0)
@@ -73,6 +82,7 @@ io.on('connection', function (socket) {
   // emit usersCount when connection is closed
   socket.on('disconnect', function () {
     emitUsersCount(io)
+    checkForZeroUsers(io)
   })
 
   // Power Commands
@@ -118,11 +128,38 @@ io.on('connection', function (socket) {
   })
 })
 
+// stop both motors
+function stopVehicle() {
+  brake(pin0, pin1)
+  brake(pin2, pin3)
+}
+
+// indicate if any users are connected
+function updateUserLeds(usersCount) {
+  if (usersCount > 0) {
+    usersLed.on()
+    noUsersLed.off()
+  } else {
+    usersLed.off()
+    noUsersLed.on()
+    console.log('Awaiting users to join...')
+  }
+}
+
 // emit usersCount to all sockets
 function emitUsersCount(io) {
   io.sockets.emit('usersCount', {
     totalUsers: io.engine.clientsCount
   })
+
+  updateUserLeds(io.engine.clientsCount)
+}
+
+function checkForZeroUsers(io) {
+  if (io.engine.clientsCount === 0) {
+    stopVehicle()
+    updateUserLeds(io.engine.clientsCount)
+  }
 }
 
 // emit signal received to all sockets
@@ -142,7 +179,7 @@ app.set('views', path.join(__dirname, 'views'))
 // will look into this later but for now just serve html
 //app.set('view engine', 'jade')
 
-app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')))
+app.use(favicon(path.join(__dirname, 'public', 'images', 'favicon.ico')))
 app.use(logger('dev'))
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: false }))
@@ -155,7 +192,11 @@ app.get('/', function(req, res, next) {
   res.send('/public/index.html')
 })
 
-let address = httpServer.address()
+app.get('/mobile', function(req, res, next) {
+  res.send('/public/mobile.html')
+})
+
+const address = httpServer.address()
 
 // get Tessel 2 IP address via cli with `t2 wifi`
 console.log(`Server running at http://tessel2IpAddress:${address.port}`)
