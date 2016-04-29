@@ -12,6 +12,7 @@ const app = express()
 
 const httpServer = require('http').Server(app)
 const io = require('socket.io')(httpServer)
+const os = require('os')
 
 const tessel = require('tessel')
 
@@ -71,7 +72,10 @@ function steerStraight(p1, p2) {
   brake(pin0, pin1)
 }
 
-httpServer.listen(3000)
+const address = os.networkInterfaces()['wlan0'][0].address
+const port = 3000
+
+httpServer.listen(port)
 
 io.on('connection', function (socket) {
   console.log(`New connection to socketId: ${socket.id}`)
@@ -196,7 +200,5 @@ app.get('/mobile', function(req, res, next) {
   res.send('/public/mobile.html')
 })
 
-const address = httpServer.address()
-
 // get Tessel 2 IP address via cli with `t2 wifi`
-console.log(`Server running at http://tessel2IpAddress:${address.port}`)
+console.log(`Server running at http://${address}:${port}`)
