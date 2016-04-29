@@ -12,8 +12,11 @@
     "serve-favicon": "^2.3.0",
     "socket.io": "^1.4.5"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "astro": "^0.9.2"
+  },
   "scripts": {
+    "sass": "astro sass --input public/stylesheets/ --output public/stylesheets/",
     "start": "node app.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -22,7 +25,7 @@
     "url": "www.github.com/ryanjgill/tessel_new_bright_rc_hack"
   },
   "keywords": [
-    "Tessel"
+    "Tessel 2"
   ],
   "license": "MIT",
   "author": "Ryan Gill"
