@@ -1,6 +1,6 @@
 {
   "name": "tessel-new-bright-rc-hack",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Tessel 2 New Bright RC car hack. Replacing the internals of a New Bright RC car with a Tessel 2 microcontroller and controlling it using websockets.",
   "main": "app.js",
   "dependencies": {
