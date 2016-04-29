@@ -1,44 +1,71 @@
 $(function () {
     var socket = io()
 
-    socket.on('led:change', function (data) {
-        console.log(data)
-    })
+    if (('ontouchstart' in window) || (navigator.maxTouchPoints > 0) || (navigator.msMaxTouchPoints > 0)) {
+        // use touchstart and touchend events
+        $('#forward').on('touchstart', function () {
+            socket.emit('command:forward:on')
+        })
 
-    socket.on('signal:received', function (data) {
-        console.log(data)
-    })
+        $('#forward').on('touchend', function () {
+            socket.emit('command:forward:off')
+        })
 
-    $('#forward').mousedown(function () {
-        socket.emit('command:forward:on')
-    })
+        $('#reverse').on('touchstart', function () {
+            socket.emit('command:reverse:on')
+        })
 
-    $('#forward').mouseup(function () {
-        socket.emit('command:forward:off')
-    })
+        $('#reverse').on('touchend', function () {
+            socket.emit('command:reverse:off')
+        })
 
-    $('#reverse').mousedown(function () {
-        socket.emit('command:reverse:on')
-    })
+        $('#left').on('touchstart', function () {
+            socket.emit('command:left:on')
+        })
 
-    $('#reverse').mouseup(function () {
-        socket.emit('command:reverse:off')
-    })
+        $('#left').on('touchend', function () {
+            socket.emit('command:left:off')
+        })
 
-    $('#left').mousedown(function () {
-        socket.emit('command:left:on')
-    })
+        $('#right').on('touchstart', function () {
+            socket.emit('command:right:on')
+        })
 
-    $('#left').mouseup(function () {
-        socket.emit('command:left:off')
-    })
+        $('#right').on('touchend', function () {
+            socket.emit('command:right:off')
+        })
+    } else {
+        // use mousedown and mouseup events
+        $('#forward').mousedown(function () {
+            socket.emit('command:forward:on')
+        })
 
-    $('#right').mousedown(function () {
-        socket.emit('command:right:on')
-    })
+        $('#forward').mouseup(function () {
+            socket.emit('command:forward:off')
+        })
 
-    $('#right').mouseup(function () {
-        socket.emit('command:right:off')
-    })
+        $('#reverse').mousedown(function () {
+            socket.emit('command:reverse:on')
+        })
 
+        $('#reverse').mouseup(function () {
+            socket.emit('command:reverse:off')
+        })
+
+        $('#left').mousedown(function () {
+            socket.emit('command:left:on')
+        })
+
+        $('#left').mouseup(function () {
+            socket.emit('command:left:off')
+        })
+
+        $('#right').mousedown(function () {
+            socket.emit('command:right:on')
+        })
+
+        $('#right').mouseup(function () {
+            socket.emit('command:right:off')
+        })
+    }
 })
