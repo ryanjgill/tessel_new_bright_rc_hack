@@ -7,6 +7,13 @@ html, body {
   background-color: #FAFAFA;
 }
 
+div {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
 .hide {
   display: none !important;
 }
