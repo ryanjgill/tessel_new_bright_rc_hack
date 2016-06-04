@@ -78,17 +78,25 @@ const port = 3000
 
 httpServer.listen(port)
 
+let streamStarted = false
+let camera = new av.Camera()
+
 io.on('connection', function (socket) {
-  let camera = new av.Camera()
-
   socket.on('ready', () => {
-    console.log('user ready for images, init stream ...')
-    camera.stream()
-  })
+    console.log('user ready for images')
 
-  camera.on('data', (data) => {
-    //console.log('frame: ', new Date().valueOf())
-    io.sockets.emit('image', data.toString('base64'))
+    if (!streamStarted) {
+      console.log('init stream ...')
+      camera.stream()
+
+      camera.on('data', (data) => {
+        //console.log('frame: ', new Date().valueOf())
+        // emit image to all sockets
+        io.emit('image', data.toString('base64'))
+      })
+
+      streamStarted = true
+    }
   })
 
   // logging user an socketId
