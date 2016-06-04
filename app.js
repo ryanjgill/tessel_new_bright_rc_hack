@@ -15,6 +15,7 @@ const io = require('socket.io')(httpServer)
 const os = require('os')
 
 const tessel = require('tessel')
+const av = require('tessel-av')
 
 // leds to display if user is connected
 const usersLed = tessel.led[2]
@@ -24,10 +25,10 @@ const noUsersLed = tessel.led[3]
 noUsersLed.on()
 
 // motor pins
-const pin0 = tessel.port.A.pin[0]
-const pin1 = tessel.port.A.pin[1]
-const pin2 = tessel.port.A.pin[2]
-const pin3 = tessel.port.A.pin[3]
+const pin0 = tessel.port.B.pin[0]
+const pin1 = tessel.port.B.pin[1]
+const pin2 = tessel.port.B.pin[2]
+const pin3 = tessel.port.B.pin[3]
 
 pin0.output(0)
 pin1.output(0)
@@ -78,6 +79,19 @@ const port = 3000
 httpServer.listen(port)
 
 io.on('connection', function (socket) {
+  let camera = new av.Camera()
+
+  socket.on('ready', () => {
+    console.log('user ready for images, init stream ...')
+    camera.stream()
+  })
+
+  camera.on('data', (data) => {
+    //console.log('frame: ', new Date().valueOf())
+    io.sockets.emit('image', data.toString('base64'))
+  })
+
+  // logging user an socketId
   console.log(`New connection to socketId: ${socket.id}`)
 
   // emit usersCount on new connection
