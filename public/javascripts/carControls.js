@@ -34,6 +34,22 @@ $(function () {
         $('#right').on('touchend', function () {
             socket.emit('command:right:off')
         })
+
+        $('#leftReverse').on('touchstart', function () {
+            socket.emit('command:leftReverse:on')
+        })
+
+        $('#leftReverse').on('touchend', function () {
+            socket.emit('command:leftReverse:off')
+        })
+
+        $('#rightReverse').on('touchstart', function () {
+            socket.emit('command:rightReverse:on')
+        })
+
+        $('#rightReverse').on('touchend', function () {
+            socket.emit('command:rightReverse:off')
+        })
     } else {
         // use mousedown and mouseup events
         $('#forward').mousedown(function () {
@@ -66,6 +82,22 @@ $(function () {
 
         $('#right').mouseup(function () {
             socket.emit('command:right:off')
+        })
+
+        $('#leftReverse').mousedown(function () {
+            socket.emit('command:leftReverse:on')
+        })
+
+        $('#leftReverse').mouseup(function () {
+            socket.emit('command:leftReverse:off')
+        })
+
+        $('#rightReverse').mousedown(function () {
+            socket.emit('command:rightReverse:on')
+        })
+
+        $('#rightReverse').mouseup(function () {
+            socket.emit('command:rightReverse:off')
         })
     }
 })

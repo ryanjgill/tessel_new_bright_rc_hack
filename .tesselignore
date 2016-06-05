@@ -1,2 +1,2 @@
 # ignoring dev dependencies
-node_modules/astro/**
+node_modules/node-sass/**

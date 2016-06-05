@@ -24,10 +24,10 @@ const noUsersLed = tessel.led[3]
 noUsersLed.on()
 
 // motor pins
-const pin0 = tessel.port.A.pin[0]
-const pin1 = tessel.port.A.pin[1]
-const pin2 = tessel.port.A.pin[2]
-const pin3 = tessel.port.A.pin[3]
+const pin0 = tessel.port.B.pin[0]
+const pin1 = tessel.port.B.pin[1]
+const pin2 = tessel.port.B.pin[2]
+const pin3 = tessel.port.B.pin[3]
 
 pin0.output(0)
 pin1.output(0)
@@ -70,6 +70,20 @@ function steerStraight(p1, p2) {
   p1.output(0)
   p2.output(0)
   brake(pin0, pin1)
+}
+
+function steerLeftReverse(p1, p2) {
+  steerStraight(pin2, pin3)
+  p1.output(0)
+  p2.output(1)
+  reverse(pin0, pin1)
+}
+
+function steerRightReverse(p1, p2) {
+  steerStraight(pin2, pin3)
+  p1.output(1)
+  p2.output(0)
+  reverse(pin0, pin1)
 }
 
 const address = os.networkInterfaces()['wlan0'][0].address
@@ -129,6 +143,26 @@ io.on('connection', function (socket) {
   socket.on('command:right:off', function (data) {
     steerStraight(pin2, pin3)
     console.log('command received! --> RIGHT OFF')
+  })
+
+  socket.on('command:leftReverse:on', function () {
+    steerLeftReverse(pin2, pin3)
+    console.log('command received! --> LEFT REVERSE ON')
+  })
+
+  socket.on('command:leftReverse:off', function () {
+    steerStraight(pin2, pin3)
+    console.log('command received! --> LEFT REVERSE OFF')
+  })
+
+  socket.on('command:rightReverse:on', function () {
+    steerRightReverse(pin2, pin3)
+    console.log('command received! --> RIGHT REVERSE ON')
+  })
+
+  socket.on('command:rightReverse:off', function () {
+    steerStraight(pin2, pin3)
+    console.log('command received! --> RIGHT REVERSE OFF')
   })
 })
 
