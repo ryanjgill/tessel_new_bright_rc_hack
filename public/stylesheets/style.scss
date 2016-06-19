@@ -72,6 +72,20 @@ $left-dark: #512DA8;
 $right: #3F51B5;
 $right-dark: #303F9F;
 
+.btn-small {
+  width: 186px;
+  height: 100px;
+
+  line-height: 100px;
+  display: inline-block;
+  margin: 20px 40px 0 0;
+  text-align: center;
+
+  -moz-transition: all 150ms ease;
+  -o-transition: all 150ms ease;
+  -webkit-transition: all 150ms ease;
+  transition: all 150ms ease;
+}
 
 .btn-big {
   border-radius: 6px;
@@ -112,16 +126,16 @@ $right-dark: #303F9F;
   transform: translateY(10px);
 }
 
-.btn-big-reverse {
+.btn-big-reverse, .btn-small {
   background-color: $reverse;
   box-shadow: 0 0 0 1px $reverse inset, 0 0 0 2px rgba(255, 255, 255, 0.15) inset, 0 8px 0 0 $reverse-dark, 0 8px 0 1px rgba(0, 0, 0, 0.4), 0 8px 8px 1px rgba(0, 0, 0, 0.5);
 }
-.btn-big-reverse:hover, .btn-big-reverse:focus {
+.btn-big-reverse:hover, .btn-big-reverse:focus, .btn-small:hover, .btn-small:focus {
   background-color: $reverse-dark;
   box-shadow: 0 0 0 1px $reverse inset, 0 0 0 2px rgba(255, 255, 255, 0.15) inset, 0 10px 0 0 $reverse-dark, 0 10px 0 1px rgba(0, 0, 0, 0.4), 0 10px 8px 1px rgba(0, 0, 0, 0.6);
   top: -2px;
 }
-.btn-big-reverse:active {
+.btn-big-reverse:active, .btn-small:active {
   box-shadow: 0 0 0 1px $reverse-dark inset, 0 0 0 2px rgba(255, 255, 255, 0.15) inset, 0 0 0 1px rgba(0, 0, 0, 0.4);
   -moz-transform: translateY(10px);
   -ms-transform: translateY(10px);

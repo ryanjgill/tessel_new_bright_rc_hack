@@ -8,12 +8,14 @@
     </head>
     <body>
         <div id="main">
-            <h1>What's up Tessel fans?</h1>
-            <p>I'm going to use the Tessel 2 to control a New Bright RC car over wifi.</p>
             <div id="controls">
                 <div id="steering">
                     <div id="left" class="btn-big btn-big-left">Left</div>
                     <div id="right" class="btn-big btn-big-right">Right</div>
+                    <br>
+                    <div id="leftReverse" class="btn-small">Left Reverse</div>
+                    <div id="rightReverse" class="btn-small">Right Reverse</div>
+
                 </div>
                 <div id="power">
                     <div id="reverse" class="btn-big btn-big-reverse">Reverse</div>
@@ -22,8 +24,8 @@
             </div>
         </div>
 
-        <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0-beta1/jquery.min.js"></script>
-        <script src="//cdnjs.cloudflare.com/ajax/libs/socket.io/1.4.5/socket.io.min.js"></script>
+        <script src="/javascripts/jquery.min.js"></script>
+        <script src="/javascripts/socket.io.min.js"></script>
         <script src="/javascripts/carControls.js"></script>
 
     </body>

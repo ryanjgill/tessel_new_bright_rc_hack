@@ -19,9 +19,11 @@ const tessel = require('tessel')
 // leds to display if user is connected
 const usersLed = tessel.led[2]
 const noUsersLed = tessel.led[3]
+let noUserBlinkInterval;
 
 // start with noUsersLed turned on
-noUsersLed.on()
+//noUsersLed.on()
+//noUserBlinkInterval;
 
 // motor pins
 const pin0 = tessel.port.A.pin[0]
@@ -70,6 +72,20 @@ function steerStraight(p1, p2) {
   p1.output(0)
   p2.output(0)
   brake(pin0, pin1)
+}
+
+function steerLeftReverse(p1, p2) {
+  steerStraight(pin2, pin3)
+  p1.output(0)
+  p2.output(1)
+  reverse(pin0, pin1)
+}
+
+function steerRightReverse(p1, p2) {
+  steerStraight(pin2, pin3)
+  p1.output(1)
+  p2.output(0)
+  reverse(pin0, pin1)
 }
 
 const address = os.networkInterfaces()['wlan0'][0].address
@@ -130,6 +146,26 @@ io.on('connection', function (socket) {
     steerStraight(pin2, pin3)
     console.log('command received! --> RIGHT OFF')
   })
+
+  socket.on('command:leftReverse:on', function () {
+    steerLeftReverse(pin2, pin3)
+    console.log('command received! --> LEFT REVERSE ON')
+  })
+
+  socket.on('command:leftReverse:off', function () {
+    steerStraight(pin2, pin3)
+    console.log('command received! --> LEFT REVERSE OFF')
+  })
+
+  socket.on('command:rightReverse:on', function () {
+    steerRightReverse(pin2, pin3)
+    console.log('command received! --> RIGHT REVERSE ON')
+  })
+
+  socket.on('command:rightReverse:off', function () {
+    steerStraight(pin2, pin3)
+    console.log('command received! --> RIGHT REVERSE OFF')
+  })
 })
 
 // stop both motors
@@ -138,17 +174,29 @@ function stopVehicle() {
   brake(pin2, pin3)
 }
 
+function blinkNoUsersLed() {
+  clearInterval(noUserBlinkInterval)
+
+  noUserBlinkInterval = setInterval(function () {
+    noUsersLed.toggle();
+  }, 1000/8);
+}
+
 // indicate if any users are connected
 function updateUserLeds(usersCount) {
   if (usersCount > 0) {
     usersLed.on()
+    clearInterval(noUserBlinkInterval)
     noUsersLed.off()
+
   } else {
     usersLed.off()
-    noUsersLed.on()
+    blinkNoUsersLed()
     console.log('Awaiting users to join...')
   }
 }
+
+updateUserLeds()
 
 // emit usersCount to all sockets
 function emitUsersCount(io) {
