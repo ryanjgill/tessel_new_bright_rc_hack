@@ -114,8 +114,6 @@ function updateUserLeds(usersCount) {
   }
 }
 
-updateUserLeds()
-
 // emit usersCount to all sockets
 function emitUsersCount(io) {
   io.sockets.emit('usersCount', {
@@ -140,7 +138,7 @@ function emitSignalReceived(io, message) {
   })
 }
 
-
+updateUserLeds()
 
 httpServer.listen(port)
 
@@ -219,7 +217,7 @@ io.on('connection', function (socket) {
   })
 })
 
-// setting app stuff
+// setting app title
 app.locals.title = 'Tessel 2 New Bright RC Hack'
 
 // view engine setup
@@ -241,5 +239,5 @@ app.get('/', function(req, res, next) {
   res.send('/public/index.html')
 })
 
-// get Tessel 2 IP address via cli with `t2 wifi`
+// log Tessel address
 console.log(`Server running at http://${address}:${port}`)
