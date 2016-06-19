@@ -19,15 +19,17 @@ const tessel = require('tessel')
 // leds to display if user is connected
 const usersLed = tessel.led[2]
 const noUsersLed = tessel.led[3]
+let noUserBlinkInterval;
 
 // start with noUsersLed turned on
-noUsersLed.on()
+//noUsersLed.on()
+//noUserBlinkInterval;
 
 // motor pins
-const pin0 = tessel.port.B.pin[0]
-const pin1 = tessel.port.B.pin[1]
-const pin2 = tessel.port.B.pin[2]
-const pin3 = tessel.port.B.pin[3]
+const pin0 = tessel.port.A.pin[0]
+const pin1 = tessel.port.A.pin[1]
+const pin2 = tessel.port.A.pin[2]
+const pin3 = tessel.port.A.pin[3]
 
 pin0.output(0)
 pin1.output(0)
@@ -172,17 +174,29 @@ function stopVehicle() {
   brake(pin2, pin3)
 }
 
+function blinkNoUsersLed() {
+  clearInterval(noUserBlinkInterval)
+
+  noUserBlinkInterval = setInterval(function () {
+    noUsersLed.toggle();
+  }, 1000/8);
+}
+
 // indicate if any users are connected
 function updateUserLeds(usersCount) {
   if (usersCount > 0) {
     usersLed.on()
+    clearInterval(noUserBlinkInterval)
     noUsersLed.off()
+
   } else {
     usersLed.off()
-    noUsersLed.on()
+    blinkNoUsersLed()
     console.log('Awaiting users to join...')
   }
 }
+
+updateUserLeds()
 
 // emit usersCount to all sockets
 function emitUsersCount(io) {
