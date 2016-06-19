@@ -13,17 +13,15 @@ const app = express()
 const httpServer = require('http').Server(app)
 const io = require('socket.io')(httpServer)
 const os = require('os')
+const address = os.networkInterfaces()['wlan0'][0].address
+const port = 3000
 
 const tessel = require('tessel')
 
 // leds to display if user is connected
 const usersLed = tessel.led[2]
 const noUsersLed = tessel.led[3]
-let noUserBlinkInterval;
-
-// start with noUsersLed turned on
-//noUsersLed.on()
-//noUserBlinkInterval;
+let noUserBlinkInterval
 
 // motor pins
 const pin0 = tessel.port.A.pin[0]
@@ -88,8 +86,61 @@ function steerRightReverse(p1, p2) {
   reverse(pin0, pin1)
 }
 
-const address = os.networkInterfaces()['wlan0'][0].address
-const port = 3000
+// stop both motors
+function stopVehicle() {
+  brake(pin0, pin1)
+  brake(pin2, pin3)
+}
+
+function blinkNoUsersLed() {
+  clearInterval(noUserBlinkInterval)
+
+  noUserBlinkInterval = setInterval(function () {
+    noUsersLed.toggle()
+  }, 1000/8)
+}
+
+// indicate if any users are connected
+function updateUserLeds(usersCount) {
+  if (usersCount > 0) {
+    usersLed.on()
+    clearInterval(noUserBlinkInterval)
+    noUsersLed.off()
+
+  } else {
+    usersLed.off()
+    blinkNoUsersLed()
+    console.log('Awaiting users to join...')
+  }
+}
+
+updateUserLeds()
+
+// emit usersCount to all sockets
+function emitUsersCount(io) {
+  io.sockets.emit('usersCount', {
+    totalUsers: io.engine.clientsCount
+  })
+
+  updateUserLeds(io.engine.clientsCount)
+}
+
+function checkForZeroUsers(io) {
+  if (io.engine.clientsCount === 0) {
+    stopVehicle()
+    updateUserLeds(io.engine.clientsCount)
+  }
+}
+
+// emit signal received to all sockets
+function emitSignalReceived(io, message) {
+  io.sockets.emit('signal:received', {
+    date: new Date().getTime(),
+    value: message || 'Signal received.'
+  })
+}
+
+
 
 httpServer.listen(port)
 
@@ -168,60 +219,6 @@ io.on('connection', function (socket) {
   })
 })
 
-// stop both motors
-function stopVehicle() {
-  brake(pin0, pin1)
-  brake(pin2, pin3)
-}
-
-function blinkNoUsersLed() {
-  clearInterval(noUserBlinkInterval)
-
-  noUserBlinkInterval = setInterval(function () {
-    noUsersLed.toggle();
-  }, 1000/8);
-}
-
-// indicate if any users are connected
-function updateUserLeds(usersCount) {
-  if (usersCount > 0) {
-    usersLed.on()
-    clearInterval(noUserBlinkInterval)
-    noUsersLed.off()
-
-  } else {
-    usersLed.off()
-    blinkNoUsersLed()
-    console.log('Awaiting users to join...')
-  }
-}
-
-updateUserLeds()
-
-// emit usersCount to all sockets
-function emitUsersCount(io) {
-  io.sockets.emit('usersCount', {
-    totalUsers: io.engine.clientsCount
-  })
-
-  updateUserLeds(io.engine.clientsCount)
-}
-
-function checkForZeroUsers(io) {
-  if (io.engine.clientsCount === 0) {
-    stopVehicle()
-    updateUserLeds(io.engine.clientsCount)
-  }
-}
-
-// emit signal received to all sockets
-function emitSignalReceived(io, message) {
-  io.sockets.emit('signal:received', {
-    date: new Date().getTime(),
-    value: message || 'Signal received.'
-  })
-}
-
 // setting app stuff
 app.locals.title = 'Tessel 2 New Bright RC Hack'
 
@@ -242,10 +239,6 @@ app.use(express.static(path.join(__dirname, 'public')))
 // Routes
 app.get('/', function(req, res, next) {
   res.send('/public/index.html')
-})
-
-app.get('/mobile', function(req, res, next) {
-  res.send('/public/mobile.html')
 })
 
 // get Tessel 2 IP address via cli with `t2 wifi`
