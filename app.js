@@ -23,6 +23,12 @@ const usersLed = tessel.led[2]
 const noUsersLed = tessel.led[3]
 let noUserBlinkInterval
 
+const headLights = tessel.port.A.pin[4]
+const tailLights = tessel.port.A.pin[5]
+
+headLights.output(0)
+tailLights.output(0)
+
 // motor pins
 const pin0 = tessel.port.A.pin[0]
 const pin1 = tessel.port.A.pin[1]
@@ -53,23 +59,18 @@ function brake(p1, p2) {
 }
 
 function steerLeft(p1, p2) {
-  steerStraight(pin2, pin3)
   p1.output(0)
   p2.output(1)
-  forward(pin0, pin1)
 }
 
 function steerRight(p1, p2) {
-  steerStraight(pin2, pin3)
   p1.output(1)
   p2.output(0)
-  forward(pin0, pin1)
 }
 
 function steerStraight(p1, p2) {
   p1.output(0)
   p2.output(0)
-  brake(pin0, pin1)
 }
 
 function steerLeftReverse(p1, p2) {
@@ -92,6 +93,16 @@ function stopVehicle() {
   brake(pin2, pin3)
 }
 
+function turnLightsOn() {
+  headLights.output(1)
+  tailLights.output(1)
+}
+
+function turnLightsOff() {
+  headLights.output(0)
+  tailLights.output(0)
+}
+
 function blinkNoUsersLed() {
   clearInterval(noUserBlinkInterval)
 
@@ -104,6 +115,7 @@ function blinkNoUsersLed() {
 function updateUserLeds(usersCount) {
   if (usersCount > 0) {
     usersLed.on()
+    turnLightsOn()
     clearInterval(noUserBlinkInterval)
     noUsersLed.off()
 
@@ -126,6 +138,7 @@ function emitUsersCount(io) {
 function checkForZeroUsers(io) {
   if (io.engine.clientsCount === 0) {
     stopVehicle()
+    turnLightsOff()
     updateUserLeds(io.engine.clientsCount)
   }
 }
